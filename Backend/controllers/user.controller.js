@@ -13,6 +13,12 @@ module.exports.registerUser = async (req, res, next) => {
 
   const { fullName, email, password } = req.body;
 
+  const isUserAlreadyExist = await userModel.findOne({ email });
+
+  if (isUserAlreadyExist) {
+    return res.status(400).json({ message: "User already exist" });
+  }
+
   const hashedPassword = await userModel.hashPassword(password);
 
   const user = await userService.createUser({
@@ -31,6 +37,7 @@ module.exports.registerUser = async (req, res, next) => {
 };
 
 module.exports.loginUser = async (req, res, next) => {
+  //if captain detail was not found throw error
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -61,7 +68,7 @@ module.exports.getUserProfile = async (req, res, next) => {
 
 module.exports.logoutUser = async (req, res, next) => {
   res.clearCookie("token");
-  const token = req.cookies.token || req.headers.authorization.split(' ')[1];
+  const token = req.cookies.token || req.headers.authorization.split(" ")[1];
 
   await blackListTokenModel.create({ token });
 

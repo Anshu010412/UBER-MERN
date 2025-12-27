@@ -6,7 +6,7 @@ const blacklistTokenSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    createdAt: {
+    createdAt: { // follow TTl method (time to leave)
         type: Date,
         default: Date.now,
         expires: 86400 // 24 hours in seconds
