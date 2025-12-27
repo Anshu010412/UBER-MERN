@@ -74,7 +74,7 @@ Example request JSON:
 **Example curl:**
 
 ```bash
-curl -X POST http://localhost:3000/users/register \
+curl -X POST http://localhost:4000/users/register \
   -H "Content-Type: application/json" \
   -d '{"fullName":{"firstName":"Jane","lastName":"Doe"},"email":"jane.doe@example.com","password":"secret123"}'
 ```
@@ -268,7 +268,7 @@ Example request JSON:
 **Example curl:**
 
 ```bash
-curl -X POST http://localhost:3000/captains/register \
+curl -X POST http://localhost:4000/captains/register \
   -H "Content-Type: application/json" \
   -d '{"fullname":{"firstname":"John","lastname":"Smith"},"email":"john.smith@example.com","password":"driverpass","vehicle":{"color":"Blue","plate":"XYZ123","capacity":4,"vehicleType":"car"}}'
 ```
@@ -323,7 +323,7 @@ Example request JSON:
 **Example curl:**
 
 ```bash
-curl -X POST http://localhost:3000/captains/login \
+curl -X POST http://localhost:4000/captains/login \
   -H "Content-Type: application/json" \
   -d '{"email":"john.smith@example.com","password":"driverpass"}'
 ```
@@ -331,4 +331,74 @@ curl -X POST http://localhost:3000/captains/login \
 **Notes:**
 - The route-level validators for captains are defined in `routes/captain.route.js` and enforce the vehicle and profile constraints listed above.
 - The `password` is stored hashed (`select: false` in the model). Duplicate email handling should be implemented to return a `409` conflict when appropriate.
+
+## GET /captains/profile
+
+**Description:**
+Returns the authenticated captain's profile. Requires a valid JWT either in a `token` cookie or an `Authorization: Bearer <token>` header.
+
+**Endpoint:**
+- Method: `GET`
+- URL: `/captains/profile`
+
+**Authentication:**
+- Required — route uses `authMiddleware.authCaptain` which verifies the JWT and checks token blacklist.
+
+**Responses:**
+- `200 OK` — Returns the authenticated captain object
+
+```json
+{
+  "_id": "<id>",
+  "fullname": { "firstname": "John", "lastname": "Smith" },
+  "email": "john.smith@example.com",
+  "socketId": null,
+  "status": "active",
+  "vehicle": { "color": "Blue", "plate": "XYZ123", "capacity": 4, "vehicleType": "car" },
+  "location": { "lat": 12.34, "lng": 56.78 }
+}
+```
+
+- `401 Unauthorized` — Missing, invalid, or blacklisted token
+
+**Example curl (Authorization header):**
+
+```bash
+curl -X GET http://localhost:4000/captains/profile \
+  -H "Authorization: Bearer <jwt-token>"
+```
+
+## GET /captains/logout
+
+**Description:**
+Logs out the authenticated captain by clearing the `token` cookie and adding the token to a blacklist so it can no longer be used.
+
+**Endpoint:**
+- Method: `GET`
+- URL: `/captains/logout`
+
+**Authentication:**
+- Required — route uses `authMiddleware.authCaptain`.
+
+**Responses:**
+- `200 OK` — Successful logout
+
+```json
+{
+  "message": "Logged Out Successfully"
+}
+```
+
+- `401 Unauthorized` — Missing, invalid, or blacklisted token
+
+**Example curl (with cookie):**
+
+```bash
+curl -X GET http://localhost:4000/captains/logout \
+  -H "Cookie: token=<jwt-token>"
+```
+
+**Notes:**
+- The implementation clears the cookie server-side and stores the token in `blacklistToken` for future verification (see `controllers/captain.controller.js`).
+- Clients should also remove tokens locally after logout to avoid reuse.
 
