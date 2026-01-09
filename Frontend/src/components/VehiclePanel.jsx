@@ -18,7 +18,7 @@ const VehiclePanel = (props) => {
                 />
                 <div className=" w-1/2">
                     <h4 className="font-bold text-lg">
-                        UberGo{" "}
+                        UberGo
                         <span className="ml-1">
                             <i className="text-md font-medium ri-user-fill"></i>4
                         </span>
