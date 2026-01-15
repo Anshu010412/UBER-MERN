@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Start from "./pages/Start";
 import Home from "./pages/Home";
 import UserLogin from "./pages/UserLogin";
+import Riding from "./pages/Riding";
 import UserSignup from "./pages/UserSignup";
 import UserLogout from "./pages/UserLogout";
 import UserProtectWrapper from "./pages/UserProtectWrapper";
@@ -26,6 +27,7 @@ const App = () => {
           }
         />
         <Route path="/login" element={<UserLogin />} />
+        <Route path="/riding" element={<Riding />} />
         <Route path="/signup" element={<UserSignup />} />
         <Route
           path="/user/logout"
