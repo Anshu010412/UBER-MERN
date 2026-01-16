@@ -52,8 +52,7 @@ const CaptainHome = () => {
         />
         <Link
           to="/captain-home"
-          className="h-10 w-10 bg-white flex items-center justify-center rounded-full"
-        >
+          className="h-10 w-10 bg-white flex items-center justify-center rounded-full">
           <i className="text-lg font-bold ri-logout-box-r-line"></i>
         </Link>
       </div>
@@ -62,31 +61,27 @@ const CaptainHome = () => {
         <img
           className="h-full w-full object-cover"
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="map gif"
-        />
+          alt="map gif"/>
       </div>
 
       <div className="h-2/5 p-6">
         <CaptainDetails />
       </div>
 
-      <div
-        ref={ridePopupPanelRef}
-        className="fixed w-full z-10 bottom-0 px-4 py-9 translate-y-full bg-white pt-12"
-      >
+      <div ref={ridePopupPanelRef}
+        className="fixed w-full z-10 bottom-0 px-4 py-9 translate-y-full bg-white pt-12">
         <RidePopUp 
         setRidePopupPanel={setRidePopupPanel} 
         setConfirmRidePopupPanel={setConfirmRidePopupPanel}/>
       </div>
 
-      <div
-        ref={ConfirmRidePopupPanelRef}
-        className="fixed w-full h-screen z-10 bottom-0 px-4 py-9 translate-y-full bg-white pt-12"
-      >
+      <div ref={ConfirmRidePopupPanelRef}
+        className="fixed w-full h-screen z-10 bottom-0 px-4 py-9 translate-y-full bg-white pt-12">
         <ConfirmRidePopUp
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           setRidePopupPanel={setRidePopupPanel}/>
       </div>
+
     </div>
   );
 };
